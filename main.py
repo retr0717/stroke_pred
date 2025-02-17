@@ -1,43 +1,46 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('input_data.csv')
+df = pd.read_csv('air_quality.csv')
 
-mappings = {
-    'Gender': {'Female': 1, 'Male': 0},
-    'Work Type': {'Private': 0, 'Self-employed': 1, 'Govt_job': 2, 'Never Worked': 3, 'Never_worked': 4},
-    'Residence Type': {'Urban': 0, 'Rural': 1},
-    'Smoking Status': {'Never smoked': 0, 'Formerly smoked': 1, 'Smokes': 2, 'Unknown': 3},
-    'Physical Activity': {'Sedentary': 1, 'Active': 0, 'Light': 2, 'Moderate': 3},
-    'Dietary Habits': {'Non Vegetarian': 1, 'Vegetarian': 0, 'Mixed': 2},
-    'Education Level': {'No Education': 0, 'Primary': 1, 'Secondary': 2, 'Tertiary': 3},
-    'Region': {'North': 0, 'South': 1, 'East': 2, 'West': 3},
-    'Income Level': {'Low': 0, 'Middle': 1, 'High': 2}
-}
+print("First five rows of dataset:")
+print(df.head())
+print("\nShape of dataset:", df.shape)
+print("\nColumn names:", df.columns.tolist())
 
-for col, mapping in mappings.items():
-    if col in df.columns:
-        df[col] = df[col].map(mapping)
+missing_per_column = df.isnull().sum()
+print("\nMissing data column-wise:")
+print(missing_per_column)
 
-df = df.drop(columns=['ID'], errors='ignore')
+print("\nTotal number of missing values:", missing_per_column.sum())
 
-numeric_df = df.select_dtypes(include=[np.number])
-numeric_df = numeric_df.fillna(numeric_df.median())
+columns_with_null = df.isnull().any()
+print("\nColumns with missing data:")
+print(columns_with_null)
 
-mean = numeric_df.mean().round(4)
-median = numeric_df.median().round(4)
-mode = numeric_df.mode().iloc[0].round(4) if not numeric_df.mode().empty else np.nan
-variance = numeric_df.var().round(4)
-std_dev = numeric_df.std().round(4)
-Q1 = numeric_df.quantile(0.25).round(4)
-Q3 = numeric_df.quantile(0.75).round(4)
-IQR = (Q3 - Q1).round(4)
+# Filling with mean
+filled_mean = df.fillna(df.select_dtypes(include=[np.number]).mean())
+print("\nStatus after filling with mean (missing values per column):")
+print(filled_mean.isnull().sum())
 
-results = pd.DataFrame({
-    'Measure': ['Mean', 'Median', 'Mode', 'Q1', 'Q3', 'IQR', 'Variance', 'Standard Deviation'],
-    **{col: [mean[col], median[col], mode[col], Q1[col], Q3[col], IQR[col], variance[col], std_dev[col]] for col in numeric_df.columns}
-})
+# Filling with median
+filled_median = df.fillna(df.select_dtypes(include=[np.number]).median())
+print("\nStatus after filling with median (missing values per column):")
+print(filled_median.isnull().sum())
 
-results.set_index('Measure', inplace=True)
-results.to_csv('stroke_prediction_stats.csv')
-print("Results saved to 'stroke_prediction_stats.csv'")
+# Filling with mode
+filled_mode = df.fillna(df.mode().iloc[0])
+print("\nStatus after filling with mode (missing values per column):")
+print(filled_mode.isnull().sum())
+
+print("\nDataset with missing data (first five rows):")
+print(df[df.isnull().any(axis=1)].head())
+
+print("\nStatus of dataset with missing data:")
+print(df.isnull().sum())
+
+dropped_na = df.dropna()
+print("\nStatus after dropping missing values (missing values per column):")
+print(dropped_na.isnull().sum())
+
+# Existing mapping and statistical calculations code goes here after this block.

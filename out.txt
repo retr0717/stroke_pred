@@ -1,0 +1,77 @@
+First five rows of dataset:
+         Date  Ozone  Solar  Wind  Temp
+0  01-05-1976   41.0  190.0   7.4    67
+1  02-05-1976   36.0  118.0   8.0    72
+2  03-05-1976   12.0  149.0  12.6    74
+3  04-05-1976   18.0  313.0  11.5    62
+4  05-05-1976    NaN    NaN  14.3    56
+
+Shape of dataset: (153, 5)
+
+Column names: ['Date', 'Ozone', 'Solar', 'Wind', 'Temp']
+
+Missing data column-wise:
+Date      0
+Ozone    37
+Solar     7
+Wind      0
+Temp      0
+dtype: int64
+
+Total number of missing values: 44
+
+Columns with missing data:
+Date     False
+Ozone     True
+Solar     True
+Wind     False
+Temp     False
+dtype: bool
+
+Status after filling with mean (missing values per column):
+Date     0
+Ozone    0
+Solar    0
+Wind     0
+Temp     0
+dtype: int64
+
+Status after filling with median (missing values per column):
+Date     0
+Ozone    0
+Solar    0
+Wind     0
+Temp     0
+dtype: int64
+
+Status after filling with mode (missing values per column):
+Date     0
+Ozone    0
+Solar    0
+Wind     0
+Temp     0
+dtype: int64
+
+Dataset with missing data (first five rows):
+          Date  Ozone  Solar  Wind  Temp
+4   05-05-1976    NaN    NaN  14.3    56
+5   06-05-1976   28.0    NaN  14.9    66
+9   10-05-1976    NaN  194.0   8.6    69
+10  11-05-1976    7.0    NaN   6.9    74
+24  25-05-1976    NaN   66.0  16.6    57
+
+Status of dataset with missing data:
+Date      0
+Ozone    37
+Solar     7
+Wind      0
+Temp      0
+dtype: int64
+
+Status after dropping missing values (missing values per column):
+Date     0
+Ozone    0
+Solar    0
+Wind     0
+Temp     0
+dtype: int64
